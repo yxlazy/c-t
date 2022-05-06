@@ -1,9 +1,11 @@
 const path = require('path');
+const fs = require('fs');
 const prompts = require('prompts');
-const {red, reset} = require('kolorist');
+const {red, reset, green} = require('kolorist');
 
 const argv = require('minimist')(process.argv.slice(2));
 const cwd = process.cwd();
+console.log('projectName', path.join(cwd, 'projectName'));
 
 const renameFiles = {
   _gitignore: '.gitignore'
@@ -85,7 +87,7 @@ async function init() {
 
   const pkg = require(path.join(templateDir, `package.json`))
 
-  pkg.name = packageName || targetDir
+  pkg.name = targetDir
 
   write('package.json', JSON.stringify(pkg, null, 2))
 
@@ -94,17 +96,17 @@ async function init() {
 
   console.log(`\nDone. Now run:\n`)
   if (root !== cwd) {
-    console.log(`  cd ${path.relative(cwd, root)}`)
+    console.log(green(`  cd ${path.relative(cwd, root)}`))
   }
 
   switch (pkgManager) {
     case 'yarn':
-      console.log('  yarn')
-      console.log('  yarn dev')
+      console.log(green('  yarn'))
+      console.log(green('  yarn dev'))
       break
     default:
-      console.log(`  ${pkgManager} install`)
-      console.log(`  ${pkgManager} run dev`)
+      console.log(green(`  ${pkgManager} install`))
+      console.log(green(`  ${pkgManager} run dev`))
       break
   }
   console.log()
